@@ -1,9 +1,10 @@
 ## How to import?
 <video width="480" controls>
-  <source src="video/import.mp4" type="video/mp4">
+  <source src="import.mp4" type="video/mp4">
 </video>
 
-> Open deze pagina op [https://noidvr.github.io/lightpins/](https://noidvr.github.io/lightpins/)
+
+## > Open deze pagina op [https://noidvr.github.io/lightpins/](https://noidvr.github.io/lightpins/)
 
 ## Gebruiken als extensie
 
