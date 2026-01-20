@@ -1,6 +1,7 @@
 ## How to import?
 
-[Bekijk tutorial video](import.mp4)
+[![Click here for tutorial!!](https://img.youtube.com/vi/DAyPt6xlyxM/0.jpg)](https://youtu.be/DAyPt6xlyxM)
+
 
 ## > Open deze pagina op [https://noidvr.github.io/lightpins/](https://noidvr.github.io/lightpins/)
 
