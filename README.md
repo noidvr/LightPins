@@ -1,10 +1,6 @@
 ## How to import?
 
-<video width="480" controls>
-  <source src="import.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
+[Bekijk tutorial video](import.mp4)
 
 ## > Open deze pagina op [https://noidvr.github.io/lightpins/](https://noidvr.github.io/lightpins/)
 
