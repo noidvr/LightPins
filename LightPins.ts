@@ -2,150 +2,182 @@
  * MakeCode Extensie: FlickerLights + Snake Lights
  */
 //% color=#198F4C icon="\uf0eb" weight=100
+//% groups=['Basic', 'Snake', 'Pins']
 namespace FlickerLights {
 
-    //======================
-    // Oude blokken
-    //======================
+    // ======================
+    // Actieve pins (default)
+    // ======================
+    let activePins: DigitalPin[] = [
+        DigitalPin.P0,
+        DigitalPin.P1,
+        DigitalPin.P2,
+        DigitalPin.P5,
+        DigitalPin.P9,
+        DigitalPin.P11,
+        DigitalPin.P12,
+        DigitalPin.P13,
+        DigitalPin.P14,
+        DigitalPin.P15
+    ]
+
+    // ======================
+    // BASIC
+    // ======================
 
     //% block="Lights on for $Time (Sec.)"
+    //% group="Basic"
     export function LightsOnFixed(Time: number) {
-        // Zet alle pins aan
-        pins.digitalWritePin(DigitalPin.P0, 1)
-        pins.digitalWritePin(DigitalPin.P1, 1)
-        pins.digitalWritePin(DigitalPin.P2, 1)
-        pins.digitalWritePin(DigitalPin.P5, 1)
-        pins.digitalWritePin(DigitalPin.P9, 1)
-        pins.digitalWritePin(DigitalPin.P11, 1)
-        pins.digitalWritePin(DigitalPin.P12, 1)
-        pins.digitalWritePin(DigitalPin.P13, 1)
-        pins.digitalWritePin(DigitalPin.P14, 1)
-        pins.digitalWritePin(DigitalPin.P15, 1)
-        basic.pause(Time * 1000)
-        // Zet alle pins uit
-        pins.digitalWritePin(DigitalPin.P0, 0)
-        pins.digitalWritePin(DigitalPin.P1, 0)
-        pins.digitalWritePin(DigitalPin.P2, 0)
-        pins.digitalWritePin(DigitalPin.P5, 0)
-        pins.digitalWritePin(DigitalPin.P9, 0)
-        pins.digitalWritePin(DigitalPin.P11, 0)
-        pins.digitalWritePin(DigitalPin.P12, 0)
-        pins.digitalWritePin(DigitalPin.P13, 0)
-        pins.digitalWritePin(DigitalPin.P14, 0)
-        pins.digitalWritePin(DigitalPin.P15, 0)
-    }
-
-    //% block="Flicker lights random for $Time (Sec.)"
-    export function LightsFlickerRandom(Time: number) {
-        let startTime = input.runningTime()
-        while (input.runningTime() - startTime < Time * 1000) {
-            // Zet elke pin random aan of uit
-            pins.digitalWritePin(DigitalPin.P0, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P1, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P2, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P5, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P9, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P11, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P12, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P13, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P14, randint(0, 1))
-            pins.digitalWritePin(DigitalPin.P15, randint(0, 1))
-            basic.pause(100) // flicker snelheid
+        for (let p of activePins) {
+            pins.digitalWritePin(p, 1)
         }
-        // Zet alle pins uit
-        for (let p of [
-            DigitalPin.P0, DigitalPin.P1, DigitalPin.P2, DigitalPin.P5,
-            DigitalPin.P9, DigitalPin.P11, DigitalPin.P12, DigitalPin.P13,
-            DigitalPin.P14, DigitalPin.P15
-        ]) {
+
+        basic.pause(Time * 1000)
+
+        for (let p of activePins) {
             pins.digitalWritePin(p, 0)
         }
     }
 
-    //======================
-    // Snake lights helper
-    //======================
-    function snakeLoop(pauseTime: number) {
-        let pinsArray = [
-            [DigitalPin.P0, DigitalPin.P1],
-            [DigitalPin.P1, DigitalPin.P2],
-            [DigitalPin.P2, DigitalPin.P5],
-            [DigitalPin.P5, DigitalPin.P9],
-            [DigitalPin.P9, DigitalPin.P11],
-            [DigitalPin.P11, DigitalPin.P12],
-            [DigitalPin.P12, DigitalPin.P13],
-            [DigitalPin.P13, DigitalPin.P14],
-            [DigitalPin.P14, DigitalPin.P15],
-            [DigitalPin.P15]
-        ]
+    //% block="Flicker lights random for $Time (Sec.)"
+    //% group="Basic"
+    export function LightsFlickerRandom(Time: number) {
+        let startTime = input.runningTime()
 
-        for (let step = 0; step < pinsArray.length; step++) {
-            // Zet alle uit
-            for (let p of [
-                DigitalPin.P0, DigitalPin.P1, DigitalPin.P2, DigitalPin.P5,
-                DigitalPin.P9, DigitalPin.P11, DigitalPin.P12, DigitalPin.P13,
-                DigitalPin.P14, DigitalPin.P15
-            ]) {
+        while (input.runningTime() - startTime < Time * 1000) {
+            for (let p of activePins) {
+                pins.digitalWritePin(p, randint(0, 1))
+            }
+            basic.pause(100)
+        }
+
+        for (let p of activePins) {
+            pins.digitalWritePin(p, 0)
+        }
+    }
+
+    // ======================
+    // Snake helper (intern)
+    // ======================
+
+    function snakeLoop(pauseTime: number) {
+        for (let i = 0; i < activePins.length; i++) {
+            for (let p of activePins) {
                 pins.digitalWritePin(p, 0)
             }
-            // Zet huidige step aan
-            for (let p of pinsArray[step]) {
-                pins.digitalWritePin(p, 1)
+
+            pins.digitalWritePin(activePins[i], 1)
+
+            if (i > 0) {
+                pins.digitalWritePin(activePins[i - 1], 1)
             }
+
             basic.pause(pauseTime)
         }
     }
 
-    //======================
-    // Snake lights blokken
-    //======================
+    // ======================
+    // SNAKE
+    // ======================
 
     //% block="Snake lights adj for $Time (Sec.)"
-    export function snakeAdj(Time: number) {
+    //% group="Snake"
+    export function SnakeAdj(Time: number) {
         let startTime = input.runningTime()
+        let pauseTime = (Time * 1000) / activePins.length
+
         while (input.runningTime() - startTime < Time * 1000) {
-            let pauseTime = (Time * 1000) / 10 // verdeel over 10 stappen
             snakeLoop(pauseTime)
         }
-        // Zet alles uit na afloop
-        for (let p of [
-            DigitalPin.P0, DigitalPin.P1, DigitalPin.P2, DigitalPin.P5,
-            DigitalPin.P9, DigitalPin.P11, DigitalPin.P12, DigitalPin.P13,
-            DigitalPin.P14, DigitalPin.P15
-        ]) {
+
+        for (let p of activePins) {
             pins.digitalWritePin(p, 0)
         }
     }
 
     //% block="Snake lights adj for $Loops loops with speed $Speed (Sec.)"
-    export function snakeAdjWithSpeed(Loops: number, Speed: number) {
+    //% group="Snake"
+    export function SnakeAdjWithSpeed(Loops: number, Speed: number) {
         for (let i = 0; i < Loops; i++) {
             snakeLoop(Speed * 1000)
         }
-        // Zet alles uit na afloop
-        for (let p of [
-            DigitalPin.P0, DigitalPin.P1, DigitalPin.P2, DigitalPin.P5,
-            DigitalPin.P9, DigitalPin.P11, DigitalPin.P12, DigitalPin.P13,
-            DigitalPin.P14, DigitalPin.P15
-        ]) {
+
+        for (let p of activePins) {
             pins.digitalWritePin(p, 0)
         }
     }
 
     //% block="Snake lights for $Time (Sec.)"
-    export function snakeTime(Time: number) {
+    //% group="Snake"
+    export function SnakeTime(Time: number) {
         let startTime = input.runningTime()
+
         while (input.runningTime() - startTime < Time * 1000) {
-            snakeLoop(100) // originele snelheid 100ms
+            snakeLoop(100)
         }
-        // Zet alles uit na afloop
-        for (let p of [
-            DigitalPin.P0, DigitalPin.P1, DigitalPin.P2, DigitalPin.P5,
-            DigitalPin.P9, DigitalPin.P11, DigitalPin.P12, DigitalPin.P13,
-            DigitalPin.P14, DigitalPin.P15
-        ]) {
+
+        for (let p of activePins) {
             pins.digitalWritePin(p, 0)
         }
     }
 
+    // ======================
+    // PINS
+    // ======================
+
+    //% block="Set pins %p1 %p2 %p3 %p4 %p5 %p6 %p7 %p8 %p9 %p10"
+    //% p1.shadow="digitalPin"
+    //% p2.shadow="digitalPin"
+    //% p3.shadow="digitalPin"
+    //% p4.shadow="digitalPin"
+    //% p5.shadow="digitalPin"
+    //% p6.shadow="digitalPin"
+    //% p7.shadow="digitalPin"
+    //% p8.shadow="digitalPin"
+    //% p9.shadow="digitalPin"
+    //% p10.shadow="digitalPin"
+    //% group="Pins"
+    //% advanced=true
+    export function Setpins(
+        p1: DigitalPin,
+        p2: DigitalPin,
+        p3: DigitalPin,
+        p4: DigitalPin,
+        p5: DigitalPin,
+        p6: DigitalPin,
+        p7: DigitalPin,
+        p8: DigitalPin,
+        p9: DigitalPin,
+        p10: DigitalPin
+    ) {
+        let temp: DigitalPin[] = []
+        let inputPins = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10]
+
+        for (let p of inputPins) {
+            if (temp.indexOf(p) != -1) {
+                control.panic(42) // ❌ dubbele pin → error
+            }
+            temp.push(p)
+        }
+
+        activePins = temp
+    }
+
+    //% block="Reset pins to default"
+    //% group="Pins"
+    //% advanced=true
+    export function ResetPins() {
+        activePins = [
+            DigitalPin.P0,
+            DigitalPin.P1,
+            DigitalPin.P2,
+            DigitalPin.P5,
+            DigitalPin.P9,
+            DigitalPin.P11,
+            DigitalPin.P12,
+            DigitalPin.P13,
+            DigitalPin.P14,
+            DigitalPin.P15
+        ]
+    }
 }
