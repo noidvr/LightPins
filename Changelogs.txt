@@ -1,0 +1,30 @@
+///////CHANGELOGS//////////////
+
+///////PRE-RELEASE////////////
+>>V 0.0.1. (ALPHA)
+>>>Added the first block, lights on
+
+>>V 0.1.0 (ALPHA)
+>>>Added Flicker lights random and first snake block
+>>>Minor bug fixes
+
+>>V 0.1.1 (ALPHA)
+>>>Added second snake block
+>>>Minor bug fixes
+
+>>V 0.1.2 (BETA)
+>>>Added third snake block
+>>>Added a better UI
+>>>Minor bug fixes
+
+>>V 0.1.3 (BETA)
+>>>Added Pins reset block
+>>>Cleaned up code
+
+//////RELEASE/////////
+
+>>V 1.0.0 (FIRST RELEASE) (CURRENT)
+>>>Added customizeable pins
+>>>Major bug fixes
+>>>Cleaned up code (again)
+>>>remade whole UI (again)
