@@ -1,6 +1,6 @@
 ## How to import?
 
-[![Click here for tutorial!!]([https://img.youtube.com/vi/DAyPt6xlyxM/0.jpg)](https://youtu.be/rCJGUBgNr3M))
+[![Click here for tutorial!!](https://youtu.be/rCJGUBgNr3M))
 
 
 ## > Extentie link ----> [https://noidvr.github.io/lightpins/](https://noidvr.github.io/lightpins/)
