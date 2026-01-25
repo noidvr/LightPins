@@ -1,12 +1,12 @@
 /**
- * MakeCode Extensie: FlickerLights + Snake Lights
+ * MakeCode Extension: FlickerLights + Snake Lights
  */
 //% color=#198F4C icon="\uf0eb" weight=100
 //% groups=['Basic', 'Snake', 'Pins']
 namespace FlickerLights {
 
     // ======================
-    // Actieve pins (default)
+    // Active pins (default)
     // ======================
     let activePins: DigitalPin[] = [
         DigitalPin.P0,
@@ -25,8 +25,10 @@ namespace FlickerLights {
     // BASIC
     // ======================
 
-    //% block="Lights on for $Time (Sec.)"
+    //% block="Turn on all lights for $Time seconds"
     //% group="Basic"
+    //% blockSetVariable=activePins
+    //% help="Turns on all active pins for the specified time in seconds."
     export function LightsOnFixed(Time: number) {
         for (let p of activePins) {
             pins.digitalWritePin(p, 1)
@@ -39,8 +41,9 @@ namespace FlickerLights {
         }
     }
 
-    //% block="Flicker lights random for $Time (Sec.)"
+    //% block="Flicker lights randomly for $Time seconds"
     //% group="Basic"
+    //% help="Randomly turns pins on/off to create a flicker effect for the given time in seconds."
     export function LightsFlickerRandom(Time: number) {
         let startTime = input.runningTime()
 
@@ -57,7 +60,7 @@ namespace FlickerLights {
     }
 
     // ======================
-    // Snake helper (intern)
+    // Snake helper (internal)
     // ======================
 
     function snakeLoop(pauseTime: number) {
@@ -80,9 +83,10 @@ namespace FlickerLights {
     // SNAKE
     // ======================
 
-    //% block="Snake lights adj for $Time (Sec.)"
+    //% block="Snake lights with adjustable speed for $Time seconds"
     //% group="Snake"
-    export function SnakeAdj(Time: number) {
+    //% help="Runs a snake pattern along the active pins for the specified time in seconds. Speed is automatically adjusted."
+    export function SnakeAdjustable(Time: number) {
         let startTime = input.runningTime()
         let pauseTime = (Time * 1000) / activePins.length
 
@@ -95,9 +99,10 @@ namespace FlickerLights {
         }
     }
 
-    //% block="Snake lights adj for $Loops loops with speed $Speed (Sec.)"
+    //% block="Snake lights adjustable for $Loops loops with speed $Speed seconds"
     //% group="Snake"
-    export function SnakeAdjWithSpeed(Loops: number, Speed: number) {
+    //% help="Runs the snake pattern for a number of loops with specified speed (in seconds per step)."
+    export function SnakeAdjustableWithSpeed(Loops: number, Speed: number) {
         for (let i = 0; i < Loops; i++) {
             snakeLoop(Speed * 1000)
         }
@@ -107,8 +112,9 @@ namespace FlickerLights {
         }
     }
 
-    //% block="Snake lights for $Time (Sec.)"
+    //% block="Snake lights for $Time seconds"
     //% group="Snake"
+    //% help="Runs the snake pattern at default speed for a specified time in seconds."
     export function SnakeTime(Time: number) {
         let startTime = input.runningTime()
 
@@ -138,7 +144,8 @@ namespace FlickerLights {
     //% p10.shadow="digitalPin"
     //% group="Pins"
     //% advanced=true
-    export function Setpins(
+    //% help="Set the active pins for the lights. Throws an error if a pin is used twice."
+    export function SetPins(
         p1: DigitalPin,
         p2: DigitalPin,
         p3: DigitalPin,
@@ -155,7 +162,7 @@ namespace FlickerLights {
 
         for (let p of inputPins) {
             if (temp.indexOf(p) != -1) {
-                control.panic(42) // ❌ dubbele pin → error
+                control.panic(42) // Duplicate pin → throws error
             }
             temp.push(p)
         }
@@ -166,6 +173,7 @@ namespace FlickerLights {
     //% block="Reset pins to default"
     //% group="Pins"
     //% advanced=true
+    //% help="Resets the active pins to the default set (P0, P1, P2, P5, P9, P11–P15)."
     export function ResetPins() {
         activePins = [
             DigitalPin.P0,
