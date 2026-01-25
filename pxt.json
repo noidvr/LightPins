@@ -1,5 +1,5 @@
 {
-  "name": "LightPins",
+  "name": "light_pins",
   "version": "0.0.1",
   "description": "Control multiple LEDs on micro:bit V1 and V2 using the LightPins extension.",
   "license": "MIT",
