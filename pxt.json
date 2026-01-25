@@ -7,8 +7,8 @@
   "files": [
     "README.md",
     "LightPins.ts",
-    "test.ts",
-    "icon.png"
+    "test.ts"
   ],
+  "icon": "icon.png",
   "public": true
 }
