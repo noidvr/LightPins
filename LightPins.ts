@@ -6,7 +6,7 @@
 namespace FlickerLights {
 
     // ======================
-    // Active pins (default)
+    // Active pins (internal)
     // ======================
     let activePins: DigitalPin[] = [
         DigitalPin.P0,
@@ -27,7 +27,6 @@ namespace FlickerLights {
 
     //% block="Turn on all lights for $Time seconds"
     //% group="Basic"
-    //% blockSetVariable=activePins
     //% help="Turns on all active pins for the specified time in seconds."
     export function LightsOnFixed(Time: number) {
         for (let p of activePins) {
@@ -62,15 +61,17 @@ namespace FlickerLights {
     // ======================
     // Snake helper (internal)
     // ======================
-
     function snakeLoop(pauseTime: number) {
         for (let i = 0; i < activePins.length; i++) {
+            // Turn all off first
             for (let p of activePins) {
                 pins.digitalWritePin(p, 0)
             }
 
+            // Current step
             pins.digitalWritePin(activePins[i], 1)
 
+            // Keep previous on
             if (i > 0) {
                 pins.digitalWritePin(activePins[i - 1], 1)
             }
@@ -85,7 +86,7 @@ namespace FlickerLights {
 
     //% block="Snake lights with adjustable speed for $Time seconds"
     //% group="Snake"
-    //% help="Runs a snake pattern along the active pins for the specified time in seconds. Speed is automatically adjusted."
+    //% help="Runs a snake pattern along the active pins for the specified time in seconds."
     export function SnakeAdjustable(Time: number) {
         let startTime = input.runningTime()
         let pauseTime = (Time * 1000) / activePins.length
